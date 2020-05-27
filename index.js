@@ -15,7 +15,7 @@ $userSignUpForm.addEventListener("submit", e => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({username, password})
-    })
+    }).catch(error => console.log(error.message))
     $userSignUpForm.reset()
 })
 
@@ -38,6 +38,6 @@ $userLoginForm.addEventListener("submit", e => {
     .then(response => {
         const {token} = response
         localStorage.setItem("token", token)
-    })
+    }).catch(error => console.log(error.message))
     $userLoginForm.reset()
 })
