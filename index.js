@@ -1,5 +1,6 @@
 const $userSignUpForm = document.querySelector("#user-signup")
 const $userLoginForm = document.querySelector("#user-login")
+const $dropdownMenu = document.querySelector("#dropdown-menu")
 
 $userSignUpForm.addEventListener("submit", e => {
     e.preventDefault()
@@ -41,3 +42,7 @@ $userLoginForm.addEventListener("submit", e => {
     }).catch(error => console.log(error.message))
     $userLoginForm.reset()
 })
+
+$(document).ready(function(){
+    $('.modal').modal();
+});
