@@ -37,7 +37,7 @@ $userLoginForm.addEventListener("submit", e => {
     .then(response => response.json())
     .then(response => {
         const {token} = response
-        alert(token)
+        localStorage.setItem("token", token)
     })
     $userLoginForm.reset()
 })
