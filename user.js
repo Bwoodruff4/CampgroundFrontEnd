@@ -1,3 +1,5 @@
+const $dropdownMenu = document.querySelector("#dropdown-menu")
+const $logout = document.querySelector("#logout")
 var map;
 const baseURL= "https://developer.nps.gov/api/v1"
 const key = ``
@@ -6,7 +8,41 @@ let state = "CO"
 let latLong = {lat: 38.9972, lng: -105.5478}
 let gmarkers = [];
 
-createMarkers(state)
+guardPage()
+
+fetch("http://localhost:3000/users", {
+    headers:{
+        Authorization: `bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+    }
+}).then(response => response.json())
+.then(response => {
+    state = response.location
+    let favoriteCampsites = response.favorites
+
+    console.log(favoriteCampsites)
+
+    latLong = recenterOnState(state)
+    initMap()
+    createMarkers(state)
+    campsites = getCampsiteMarkers(favoriteCampsites)
+    console.log(campsites)
+    setMarkers(map, campsites)
+})
+
+function guardPage() {
+    if(!localStorage.getItem("token")){
+        window.location.href = "/"
+    }
+}
+
+$(document).ready(function(){
+    $('.modal').modal();
+});
+
+$(document).ready(function(){
+    $('select').formSelect();
+});
 
 $selectState.addEventListener('change', (event) => {
     state = event.target.value
@@ -14,6 +50,11 @@ $selectState.addEventListener('change', (event) => {
     initMap()
     removeMarkers()
     createMarkers(state)
+})
+
+$logout.addEventListener('click', (event) => {
+    localStorage.removeItem("token")
+    window.location.href = "/index.html"
 })
 
 async function createMarkers(state) {

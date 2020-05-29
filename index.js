@@ -9,13 +9,14 @@ $userSignUpForm.addEventListener("submit", e => {
 
     const username = formData.get("username")
     const password = formData.get("password")
+    const location = formData.get("location")
 
     fetch("http://localhost:3000/users", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({username, password})
+        body: JSON.stringify({username, password, location})
     }).catch(error => console.log(error.message))
     $userSignUpForm.reset()
 })
@@ -36,12 +37,26 @@ $userLoginForm.addEventListener("submit", e => {
         body: JSON.stringify({username, password})
     })
     .then(response => response.json())
-    .then(response => {
+    .then(response => {console.log(response)
         const {token} = response
         localStorage.setItem("token", token)
     }).catch(error => console.log(error.message))
-    $userLoginForm.reset()
+
+    isLoggedIn()
 })
+
+function isLoggedIn() {
+    if (localStorage.getItem("token")){
+        window.location.href = "/user.html"
+    }
+    else {
+        reject()
+    }
+}
+
+function reject(){
+    window.location.href = "/index.html"
+}
 
 $(document).ready(function(){
     $('.modal').modal();
@@ -49,4 +64,4 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     $('select').formSelect();
-  });
+});
