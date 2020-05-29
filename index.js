@@ -46,3 +46,7 @@ $userLoginForm.addEventListener("submit", e => {
 $(document).ready(function(){
     $('.modal').modal();
 });
+
+$(document).ready(function(){
+    $('select').formSelect();
+  });
